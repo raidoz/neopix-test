@@ -1,0 +1,9 @@
+[submodule "pico-sdk"]
+	path = pico-sdk
+	url = git@github.com:raspberrypi/pico-sdk.git
+[submodule "pi-pico-adafruit-neopixels"]
+	path = pi-pico-adafruit-neopixels
+	url = git@github.com:raidoz/pi-pico-adafruit-neopixels.git
+[submodule "picotool"]
+	path = picotool
+	url = git@github.com:raspberrypi/picotool.git
