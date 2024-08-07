@@ -98,6 +98,12 @@ void process (void) {
             fullpower_orange();
         break;
 
+        case '0':
+            clear_pixels();
+            show_pixels();
+            mode = 0;
+        break;
+
         case 0:
         break;
 

@@ -40,11 +40,12 @@ void show_pixels (void) {
         return;
     }
 #ifdef MATRIX153
-    for (uint8_t i=0; i < NUMPIXELS; i++) {
-        int row = i / 17;
-        int idx = i % 17;
-        uint8_t rowdx[] = {0, 3, 6, 1, 4, 7, 2, 5, 8};
-        m_ada_pixels.setPixelColor(rowdx[row] * 17 + idx, m_pixels[i][0], m_pixels[i][1], m_pixels[i][2]);
+    uint8_t segdx[] = {0, 3, 6, 1, 4, 7, 2, 5, 8};
+    for (int segment = 0; segment < 9; segment++) {
+        for (int idx = 0; idx < 17; idx++) {
+            int pix = segment * 17 + idx;
+            m_ada_pixels.setPixelColor(segdx[segment] * 17 + idx, m_pixels[pix][0], m_pixels[pix][1], m_pixels[pix][2]);
+        }
     }
 #else
     for(int i=0; i<NUMPIXELS; i++) {
