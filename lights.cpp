@@ -49,15 +49,31 @@ static void animation3 (void) {
     clear_pixels();
     printf("cleared\n");
     for(int i=0; i<NUMCOLS; i++) { // For each pixel...
-        if (i > 0) {
-            set_matrix_pixel(2, i-2, 255, 80, 0);
-            set_matrix_pixel(1, i, 255, 80, 0);
-            set_matrix_pixel(0, i-2, 255, 80, 0);
+        set_matrix_pixel(2, i-2, 255, 80, 0);
+        set_matrix_pixel(1, i, 255, 80, 0);
+        set_matrix_pixel(0, i-2, 255, 80, 0);
 
-            set_matrix_pixel(2, i-3, 0, 0, 0);
-            set_matrix_pixel(1, i-1, 0, 0, 0);
-            set_matrix_pixel(0, i-3, 0, 0, 0);
-        }
+        set_matrix_pixel(2, i-3, 0, 0, 0);
+        set_matrix_pixel(1, i-1, 0, 0, 0);
+        set_matrix_pixel(0, i-3, 0, 0, 0);
+
+        show_pixels();   // Send the updated pixel colors to the hardware.
+        sleep_ms(20); // Pause before next pass through loop
+    }
+}
+
+static void animation4 (void) {
+    clear_pixels();
+    printf("cleared\n");
+    for(int i=NUMCOLS-1; i>=0; i--) { // For each pixel...
+        set_matrix_pixel(2, i+2, 255, 80, 0);
+        set_matrix_pixel(1, i, 255, 80, 0);
+        set_matrix_pixel(0, i+2, 255, 80, 0);
+
+        set_matrix_pixel(2, i+3, 0, 0, 0);
+        set_matrix_pixel(1, i+1, 0, 0, 0);
+        set_matrix_pixel(0, i+3, 0, 0, 0);
+
         show_pixels();   // Send the updated pixel colors to the hardware.
         sleep_ms(20); // Pause before next pass through loop
     }
@@ -92,6 +108,10 @@ void process (void) {
 
         case 'c':
             animation3();
+        break;
+
+        case 'd':
+            animation4();
         break;
 
         case 'm':
