@@ -2,7 +2,6 @@
 #include "pico/stdlib.h"
 
 #include "pixels.h"
-#include "powerflag.h"
 
 
 static void animation1 (void) {
