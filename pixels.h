@@ -1,15 +1,28 @@
 #ifndef PIXELS_H_
 #define PIXELS_H_
 
-#define MATRIX153
-#ifdef MATRIX153
+//#define MATRIX153
+#define MATRIX57
+
+#if defined(MATRIX153)
+    #define ARROW_STEP 2
+    #define ARROW_DIRECTION (1)
     #define NUMROWS 3
     #define NUMCOLS 51
-    #define DELAYVAL 10
+    #define LINE_DELAY 10
+    #define ARROW_DELAY 50
+#elif defined(MATRIX57)
+    #define ARROW_STEP 1
+    #define ARROW_DIRECTION (-1)
+    #define NUMROWS 3
+    #define NUMCOLS 19
+    #define LINE_DELAY 100
+    #define ARROW_DELAY 50
 #else
     #define NUMROWS 1
     #define NUMCOLS 17
-    #define DELAYVAL 25
+    #define LINE_DELAY 50
+    #define ARROW_DELAY 50
 #endif
 #define NUMPIXELS (NUMROWS*NUMCOLS)
 

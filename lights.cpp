@@ -4,6 +4,22 @@
 #include "pixels.h"
 
 
+static void animation0 (void) {
+    clear_pixels();
+    printf("cleared\n");
+    uint8_t maxv = 25;
+    for (int i=0; i <= maxv; i++) {
+        set_pixel(NUMPIXELS-1, 0, i, 0);
+        show_pixels();
+        sleep_ms(20);
+    }
+    for (int i=maxv; i >= 0; i--) {
+        set_pixel(NUMPIXELS-1, 0, i, 0);
+        show_pixels();
+        sleep_ms(20);
+    }
+}
+
 static void animation1 (void) {
     clear_pixels();
     printf("cleared\n");
@@ -12,25 +28,25 @@ static void animation1 (void) {
         if (i > 0) set_pixel(i-1, 0, 0, 0);
         set_pixel(i, brightness, 0, 0);
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(DELAYVAL); // Pause before next pass through loop
+        sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
     for(int i=NUMPIXELS-1; i>=0; i--) { // For each pixel...
         if (i < NUMPIXELS-1) set_pixel(i+1, 0, 0, 0);
         set_pixel(i, 0, brightness, 0);
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(DELAYVAL); // Pause before next pass through loop
+        sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
         if (i > 0) set_pixel(i-1, 0, 0, 0);
         set_pixel(i, 0, 0, brightness);
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(DELAYVAL); // Pause before next pass through loop
+        sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
     for(int i=NUMPIXELS-1; i>=0; i--) { // For each pixel...
         if (i < NUMPIXELS-1) set_pixel(i+1, 0, 0, 0);
         set_pixel(i, brightness, brightness, brightness);
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(DELAYVAL); // Pause before next pass through loop
+        sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
 }
 
@@ -41,7 +57,7 @@ static void animation2 (void) {
         if (i > 0) set_pixel(i-1, 0, 0, 0);
         set_pixel(i, 255, 80, 0);
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(DELAYVAL); // Pause before next pass through loop
+        sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
 }
 
@@ -49,16 +65,16 @@ static void animation3 (void) {
     clear_pixels();
     printf("cleared\n");
     for(int i=0; i<NUMCOLS; i++) { // For each pixel...
-        set_matrix_pixel(2, i-2, 255, 80, 0);
+        set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i-2, 255, 80, 0);
+        set_matrix_pixel(0, i-ARROW_STEP, 255, 80, 0);
 
-        set_matrix_pixel(2, i-3, 0, 0, 0);
+        set_matrix_pixel(2, i-(ARROW_STEP+1), 0, 0, 0);
         set_matrix_pixel(1, i-1, 0, 0, 0);
-        set_matrix_pixel(0, i-3, 0, 0, 0);
+        set_matrix_pixel(0, i-(ARROW_STEP+1), 0, 0, 0);
 
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(20); // Pause before next pass through loop
+        sleep_ms(ARROW_DELAY); // Pause before next pass through loop
     }
 }
 
@@ -66,16 +82,16 @@ static void animation4 (void) {
     clear_pixels();
     printf("cleared\n");
     for(int i=NUMCOLS-1; i>=0; i--) { // For each pixel...
-        set_matrix_pixel(2, i+2, 255, 80, 0);
+        set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i+2, 255, 80, 0);
+        set_matrix_pixel(0, i+ARROW_STEP, 255, 80, 0);
 
-        set_matrix_pixel(2, i+3, 0, 0, 0);
+        set_matrix_pixel(2, i+(ARROW_STEP+1), 0, 0, 0);
         set_matrix_pixel(1, i+1, 0, 0, 0);
-        set_matrix_pixel(0, i+3, 0, 0, 0);
+        set_matrix_pixel(0, i+(ARROW_STEP+1), 0, 0, 0);
 
         show_pixels();   // Send the updated pixel colors to the hardware.
-        sleep_ms(20); // Pause before next pass through loop
+        sleep_ms(ARROW_DELAY); // Pause before next pass through loop
     }
 }
 
@@ -87,7 +103,7 @@ static void fullpower_orange (void) {
 }
 
 void process (void) {
-    static int mode = 0;
+    static int mode = 'x';
     for (;;) {
         int c = getchar_timeout_us(0);
         if ((c == '\n')||(c == '\r')) continue;
@@ -98,6 +114,10 @@ void process (void) {
     }
 
     switch (mode) {
+        case 'x':
+            animation0();
+        break;
+
         case 'a':
             animation1();
         break;

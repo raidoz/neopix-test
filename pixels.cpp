@@ -39,13 +39,26 @@ void show_pixels (void) {
         m_ada_pixels.show();
         return;
     }
-#ifdef MATRIX153
+#if defined(MATRIX153)
     uint8_t segdx[] = {0, 3, 6, 1, 4, 7, 2, 5, 8};
     for (int segment = 0; segment < 9; segment++) {
         for (int idx = 0; idx < 17; idx++) {
             int pix = segment * 17 + idx;
             m_ada_pixels.setPixelColor(segdx[segment] * 17 + idx, m_pixels[pix][0], m_pixels[pix][1], m_pixels[pix][2]);
         }
+    }
+#elif defined(MATRIX57)
+    for (int i = 0; i < NUMCOLS; i++) {
+        uint8_t pix = i;
+        m_ada_pixels.setPixelColor(0*NUMCOLS + i, m_pixels[pix][0], m_pixels[pix][1], m_pixels[pix][2]);
+    }
+    for (int i = 0; i < NUMCOLS; i++) {
+        uint8_t pix = 2*NUMCOLS-i-1; // Segment 2 runs in reverse
+        m_ada_pixels.setPixelColor(1*NUMCOLS + i, m_pixels[pix][0], m_pixels[pix][1], m_pixels[pix][2]);
+    }
+    for (int i = 0; i < NUMCOLS; i++) {
+        uint8_t pix = 2*NUMCOLS+i;
+        m_ada_pixels.setPixelColor(2*NUMCOLS + i, m_pixels[pix][0], m_pixels[pix][1], m_pixels[pix][2]);
     }
 #else
     for(int i=0; i<NUMPIXELS; i++) {
