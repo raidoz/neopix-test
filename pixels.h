@@ -10,7 +10,7 @@
     #define NUMROWS 3
     #define NUMCOLS 51
     #define LINE_DELAY 10
-    #define ARROW_DELAY 50
+    #define ARROW_DELAY 25
 #elif defined(MATRIX57)
     #define ARROW_STEP 1
     #define ARROW_DIRECTION (-1)
