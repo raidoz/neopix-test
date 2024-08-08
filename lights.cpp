@@ -6,7 +6,7 @@
 
 static void animation0 (void) {
     clear_pixels();
-    printf("cleared\n");
+    printf("an0\n");
     uint8_t maxv = 25;
     for (int i=0; i <= maxv; i++) {
         set_pixel(NUMPIXELS-1, 0, i, 0);
@@ -22,7 +22,7 @@ static void animation0 (void) {
 
 static void animation1 (void) {
     clear_pixels();
-    printf("cleared\n");
+    printf("an1\n");
     uint8_t brightness = 255;
     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
         if (i > 0) set_pixel(i-1, 0, 0, 0);
@@ -52,7 +52,7 @@ static void animation1 (void) {
 
 static void animation2 (void) {
     clear_pixels();
-    printf("cleared\n");
+    printf("an2\n");
     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
         if (i > 0) set_pixel(i-1, 0, 0, 0);
         set_pixel(i, 255, 80, 0);
@@ -63,7 +63,7 @@ static void animation2 (void) {
 
 static void animation3 (void) {
     clear_pixels();
-    printf("cleared\n");
+    printf("an3\n");
     for(int i=0; i<NUMCOLS; i++) { // For each pixel...
         set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
@@ -80,7 +80,7 @@ static void animation3 (void) {
 
 static void animation4 (void) {
     clear_pixels();
-    printf("cleared\n");
+    printf("an4\n");
     for(int i=NUMCOLS-1; i>=0; i--) { // For each pixel...
         set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
@@ -100,10 +100,12 @@ static void fullpower_orange (void) {
         set_pixel(i, 255, 80, 0);
     }
     show_pixels();
+    sleep_ms(100);
 }
 
 void process (void) {
     static int mode = 'x';
+    static int last_mode = 0;
     for (;;) {
         int c = getchar_timeout_us(0);
         if ((c == '\n')||(c == '\r')) continue;
@@ -115,30 +117,37 @@ void process (void) {
 
     switch (mode) {
         case 'x':
+            if (last_mode != mode) printf("an: last green\n");
             animation0();
         break;
 
         case 'a':
+            if (last_mode != mode) printf("an: sweep\n");
             animation1();
         break;
 
         case 'b':
+            if (last_mode != mode) printf("an: line\n");
             animation2();
         break;
 
         case 'c':
+            if (last_mode != mode) printf("an: <<<\n");
             animation3();
         break;
 
         case 'd':
+            if (last_mode != mode) printf("an: >>>\n");
             animation4();
         break;
 
         case 'm':
+            if (last_mode != mode) printf("an: fpo\n");
             fullpower_orange();
         break;
 
         case '0':
+            if (last_mode != mode) printf("an: off\n");
             clear_pixels();
             show_pixels();
             mode = 0;
@@ -152,6 +161,7 @@ void process (void) {
             mode = 0;
         break;
     }
+    last_mode = mode;
 };
 
 int main() {

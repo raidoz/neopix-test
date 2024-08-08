@@ -2,6 +2,8 @@
 #include "pixels.h"
 #include "Adafruit_NeoPixel.hpp"
 
+#include <stdio.h>
+
 #define PIN       28
 
 static Adafruit_NeoPixel m_ada_pixels;
@@ -35,7 +37,9 @@ void set_matrix_pixel (uint8_t row, uint8_t col, uint8_t r, uint8_t g, uint8_t b
 
 void show_pixels (void) {
     if (m_power > 5000) { // Too much
-        m_ada_pixels.setPixelColor(0, 100, 0, 0);
+        m_ada_pixels.clear();
+        printf("ERR: power = %d\n", m_power);
+        m_ada_pixels.setPixelColor(0, 50, 0, 0);
         m_ada_pixels.show();
         return;
     }
