@@ -1,8 +1,8 @@
 #ifndef PIXELS_H_
 #define PIXELS_H_
 
-#define MATRIX153
-//#define MATRIX57
+//#define MATRIX153
+#define MATRIX57
 
 #if defined(MATRIX153)
     #define ARROW_STEP 2
