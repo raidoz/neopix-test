@@ -61,10 +61,10 @@ static void animation2 (void) {
     }
 }
 
-static void animation3 (void) {
+static void animation_arr_l (void) {
     clear_pixels();
     printf("an3\n");
-    for(int i=0; i<NUMCOLS; i++) { // For each pixel...
+    for(int i=0; i<NUMCOLS; i++) {
         set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
         set_matrix_pixel(0, i-ARROW_STEP, 255, 80, 0);
@@ -78,10 +78,10 @@ static void animation3 (void) {
     }
 }
 
-static void animation4 (void) {
+static void animation_arr_r (void) {
     clear_pixels();
     printf("an4\n");
-    for(int i=NUMCOLS-1; i>=0; i--) { // For each pixel...
+    for(int i=NUMCOLS-1; i>=0; i--) {
         set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
         set_matrix_pixel(1, i, 255, 80, 0);
         set_matrix_pixel(0, i+ARROW_STEP, 255, 80, 0);
@@ -93,6 +93,82 @@ static void animation4 (void) {
         show_pixels();   // Send the updated pixel colors to the hardware.
         sleep_ms(ARROW_DELAY); // Pause before next pass through loop
     }
+}
+
+static void animation_arr2_l (void) {
+    clear_pixels();
+    printf("an3\n");
+    for(int i=0; i<NUMCOLS; i++) {
+        set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(1, i, 255, 80, 0);
+        set_matrix_pixel(0, i-ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(2, i-ARROW_STEP-1, 255, 80, 0);
+        set_matrix_pixel(1, i-1, 255, 80, 0);
+        set_matrix_pixel(0, i-ARROW_STEP-1, 255, 80, 0);
+
+        set_matrix_pixel(2, i-(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(1, i-2, 0, 0, 0);
+        set_matrix_pixel(0, i-(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(2, i-(ARROW_STEP+3), 0, 0, 0);
+        set_matrix_pixel(1, i-3, 0, 0, 0);
+        set_matrix_pixel(0, i-(ARROW_STEP+3), 0, 0, 0);
+
+        show_pixels();   // Send the updated pixel colors to the hardware.
+        sleep_ms(ARROW_DELAY); // Pause before next pass through loop
+    }
+}
+
+static void animation_arr2_r (void) {
+    clear_pixels();
+    printf("an4\n");
+    for(int i=NUMCOLS-1; i>=0; i--) {
+        set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(1, i, 255, 80, 0);
+        set_matrix_pixel(0, i+ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(2, i+ARROW_STEP+1, 255, 80, 0);
+        set_matrix_pixel(1, i+1, 255, 80, 0);
+        set_matrix_pixel(0, i+ARROW_STEP+1, 255, 80, 0);
+
+        set_matrix_pixel(2, i+(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(1, i+2, 0, 0, 0);
+        set_matrix_pixel(0, i+(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(2, i+(ARROW_STEP+3), 0, 0, 0);
+        set_matrix_pixel(1, i+3, 0, 0, 0);
+        set_matrix_pixel(0, i+(ARROW_STEP+3), 0, 0, 0);
+
+        show_pixels();   // Send the updated pixel colors to the hardware.
+        sleep_ms(ARROW_DELAY); // Pause before next pass through loop
+    }
+}
+
+static void animation_blink (uint8_t row) {
+    if (row > NUMROWS) return;
+
+    clear_pixels();
+    printf("anblink1\n");
+    for(int i=0; i<NUMCOLS; i+=2) {
+        set_matrix_pixel(row, i, 255, 80, 0);
+    }
+    show_pixels();   // Send the updated pixel colors to the hardware.
+    sleep_ms(1000); // Pause before next pass through loop
+    clear_pixels();
+    show_pixels();
+    sleep_ms(1000);
+}
+
+static void animation_blink2 (uint8_t row) {
+    if (row > NUMROWS) return;
+
+    clear_pixels();
+    printf("anblink1\n");
+    for(int i=0; i<NUMCOLS; i++) {
+        set_matrix_pixel(row, i, 255, 80, 0);
+    }
+    show_pixels();   // Send the updated pixel colors to the hardware.
+    sleep_ms(1000); // Pause before next pass through loop
+    clear_pixels();
+    show_pixels();
+    sleep_ms(1000);
 }
 
 static void fullpower_orange (void) {
@@ -116,7 +192,7 @@ void process (void) {
     }
 
     switch (mode) {
-        case 'x':
+        case '.':
             if (last_mode != mode) printf("an: last green\n");
             animation0();
         break;
@@ -133,13 +209,50 @@ void process (void) {
 
         case 'c':
             if (last_mode != mode) printf("an: <<<\n");
-            animation3();
+            animation_arr_l();
         break;
 
         case 'd':
             if (last_mode != mode) printf("an: >>>\n");
-            animation4();
+            animation_arr_r();
         break;
+
+        case 'C':
+            if (last_mode != mode) printf("an: <<<<<<\n");
+            animation_arr2_l();
+        break;
+
+        case 'D':
+            if (last_mode != mode) printf("an: >>>>>>\n");
+            animation_arr2_r();
+        break;
+
+        case 'q':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink(0);
+        break;
+        case 'w':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink(1);
+        break;
+        case 'e':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink(2);
+        break;
+
+        case 'Q':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink2(0);
+        break;
+        case 'W':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink2(1);
+        break;
+        case 'E':
+            if (last_mode != mode) printf("an: blink\n");
+            animation_blink2(2);
+        break;
+
 
         case 'm':
             if (last_mode != mode) printf("an: fpo\n");

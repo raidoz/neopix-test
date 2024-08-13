@@ -10,18 +10,21 @@
     #define NUMCOLS 51
     #define LINE_DELAY 10
     #define ARROW_DELAY 25
+    #define POWER_LIMIT 18000
 #elif defined(MATRIX57)
     #define ARROW_STEP 1
     #define NUMROWS 3
     #define NUMCOLS 19
     #define LINE_DELAY 100
     #define ARROW_DELAY 50
+    #define POWER_LIMIT 7000
 #else
     #define ARROW_STEP 1
     #define NUMROWS 1
     #define NUMCOLS 17
     #define LINE_DELAY 50
     #define ARROW_DELAY 50
+    #define POWER_LIMIT 6000
 #endif
 #define NUMPIXELS (NUMROWS*NUMCOLS)
 
