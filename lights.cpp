@@ -3,6 +3,11 @@
 
 #include "pixels.h"
 
+static uint8_t m_brightness = 100;
+
+static uint8_t bright (uint8_t orig) {
+    return (uint16_t)m_brightness * orig / 100;
+}
 
 static void animation0 (void) {
     clear_pixels();
@@ -23,7 +28,7 @@ static void animation0 (void) {
 static void animation1 (void) {
     clear_pixels();
     printf("an1\n");
-    uint8_t brightness = 255;
+    uint8_t brightness = bright(255);
     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
         if (i > 0) set_pixel(i-1, 0, 0, 0);
         set_pixel(i, brightness, 0, 0);
@@ -55,7 +60,7 @@ static void animation2 (void) {
     printf("an2\n");
     for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
         if (i > 0) set_pixel(i-1, 0, 0, 0);
-        set_pixel(i, 255, 80, 0);
+        set_pixel(i, bright(255), bright(80), 0);
         show_pixels();   // Send the updated pixel colors to the hardware.
         sleep_ms(LINE_DELAY); // Pause before next pass through loop
     }
@@ -65,9 +70,9 @@ static void animation_arr_l (void) {
     clear_pixels();
     printf("an3\n");
     for(int i=0; i<NUMCOLS; i++) {
-        set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i-ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(2, i-ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i-ARROW_STEP, bright(255), bright(80), 0);
 
         set_matrix_pixel(2, i-(ARROW_STEP+1), 0, 0, 0);
         set_matrix_pixel(1, i-1, 0, 0, 0);
@@ -82,9 +87,9 @@ static void animation_arr_r (void) {
     clear_pixels();
     printf("an4\n");
     for(int i=NUMCOLS-1; i>=0; i--) {
-        set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i+ARROW_STEP, 255, 80, 0);
+        set_matrix_pixel(2, i+ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i+ARROW_STEP, bright(255), bright(80), 0);
 
         set_matrix_pixel(2, i+(ARROW_STEP+1), 0, 0, 0);
         set_matrix_pixel(1, i+1, 0, 0, 0);
@@ -99,12 +104,12 @@ static void animation_arr2_l (void) {
     clear_pixels();
     printf("an3\n");
     for(int i=0; i<NUMCOLS; i++) {
-        set_matrix_pixel(2, i-ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i-ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(2, i-ARROW_STEP-1, 255, 80, 0);
-        set_matrix_pixel(1, i-1, 255, 80, 0);
-        set_matrix_pixel(0, i-ARROW_STEP-1, 255, 80, 0);
+        set_matrix_pixel(2, i-ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i-ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(2, i-ARROW_STEP-1, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i-1, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i-ARROW_STEP-1, bright(255), bright(80), 0);
 
         set_matrix_pixel(2, i-(ARROW_STEP+2), 0, 0, 0);
         set_matrix_pixel(1, i-2, 0, 0, 0);
@@ -122,12 +127,12 @@ static void animation_arr2_r (void) {
     clear_pixels();
     printf("an4\n");
     for(int i=NUMCOLS-1; i>=0; i--) {
-        set_matrix_pixel(2, i+ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(1, i, 255, 80, 0);
-        set_matrix_pixel(0, i+ARROW_STEP, 255, 80, 0);
-        set_matrix_pixel(2, i+ARROW_STEP+1, 255, 80, 0);
-        set_matrix_pixel(1, i+1, 255, 80, 0);
-        set_matrix_pixel(0, i+ARROW_STEP+1, 255, 80, 0);
+        set_matrix_pixel(2, i+ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i+ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(2, i+ARROW_STEP+1, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i+1, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i+ARROW_STEP+1, bright(255), bright(80), 0);
 
         set_matrix_pixel(2, i+(ARROW_STEP+2), 0, 0, 0);
         set_matrix_pixel(1, i+2, 0, 0, 0);
@@ -147,7 +152,7 @@ static void animation_blink (uint8_t row) {
     clear_pixels();
     printf("anblink1\n");
     for(int i=0; i<NUMCOLS; i+=2) {
-        set_matrix_pixel(row, i, 255, 80, 0);
+        set_matrix_pixel(row, i, bright(255), bright(80), 0);
     }
     show_pixels();   // Send the updated pixel colors to the hardware.
     sleep_ms(1000); // Pause before next pass through loop
@@ -162,7 +167,7 @@ static void animation_blink2 (uint8_t row) {
     clear_pixels();
     printf("anblink1\n");
     for(int i=0; i<NUMCOLS; i++) {
-        set_matrix_pixel(row, i, 255, 80, 0);
+        set_matrix_pixel(row, i, bright(255), bright(80), 0);
     }
     show_pixels();   // Send the updated pixel colors to the hardware.
     sleep_ms(1000); // Pause before next pass through loop
@@ -173,7 +178,7 @@ static void animation_blink2 (uint8_t row) {
 
 static void fullpower_orange (void) {
     for(int i=0; i<NUMPIXELS; i++) {
-        set_pixel(i, 255, 80, 0);
+        set_pixel(i, bright(255), bright(80), 0);
     }
     show_pixels();
     sleep_ms(100);
@@ -192,7 +197,7 @@ void process (void) {
     }
 
     switch (mode) {
-        case '.':
+        case 'x':
             if (last_mode != mode) printf("an: last green\n");
             animation0();
         break;
@@ -259,11 +264,45 @@ void process (void) {
             fullpower_orange();
         break;
 
-        case '0':
+        case '.':
             if (last_mode != mode) printf("an: off\n");
             clear_pixels();
             show_pixels();
             mode = 0;
+        break;
+
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            m_brightness = (mode - '0') * 10;
+            if (m_brightness == 0) {
+                m_brightness = 100;
+            }
+            printf("brightness: %d %%\n", m_brightness);
+            mode = last_mode;
+        break;
+
+        case '+':
+            if (m_brightness < 100) {
+                m_brightness++;
+            }
+            printf("brightness: %d %%\n", m_brightness);
+            mode = last_mode;
+        break;
+
+        case '-':
+            if (m_brightness > 0) {
+                m_brightness--;
+            }
+            printf("brightness: %d %%\n", m_brightness);
+            mode = last_mode;
         break;
 
         case 0:
