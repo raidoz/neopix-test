@@ -4,6 +4,7 @@
 #include "pixels.h"
 
 static uint8_t m_brightness = 100;
+static uint8_t m_one_pixel = 0;
 
 static uint8_t bright (uint8_t orig) {
     return (uint16_t)m_brightness * orig / 100;
@@ -176,6 +177,30 @@ static void animation_blink2 (uint8_t row) {
     sleep_ms(1000);
 }
 
+static void animation_line_blink (uint8_t segment) {
+    if (segment > 6) return;
+
+    static uint8_t segments[6][27] = {
+        {  3,  2,  1,  0, 56, 55, 99, 99, 99, 99, 88, 44, 43, 42, 41, 40, 39, 38, 99, 99, 99, 99, 99, 99, 99, 99, 99},
+        { 10, 11, 12, 13, 14, 15, 99, 99, 99, 99, 88, 26, 27, 28, 29, 30, 31, 32, 99, 99, 99, 99, 99, 99, 99, 99, 99},
+        {  5,  3,  1, 56, 54, 52, 50, 48, 46, 44, 88, 42, 40, 38, 36, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99},
+        {  8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 88, 28, 30, 32, 34, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99},
+        {  5,  4,  3,  2,  1,  0, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36},
+        {  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34},
+    };
+
+    clear_pixels();
+    printf("anblink-line\n");
+    for(int i=0; i<27; i++) {
+        set_matrix_pixel(0, segments[segment][i], bright(255), bright(80), 0);
+    }
+    show_pixels();   // Send the updated pixel colors to the hardware.
+    sleep_ms(1000); // Pause before next pass through loop
+    clear_pixels();
+    show_pixels();
+    sleep_ms(1000);
+}
+
 static void fullpower_orange (void) {
     for(int i=0; i<NUMPIXELS; i++) {
         set_pixel(i, bright(255), bright(80), 0);
@@ -187,6 +212,8 @@ static void fullpower_orange (void) {
 void process (void) {
     static int mode = 'x';
     static int last_mode = 0;
+
+    bool newdata = false;
     for (;;) {
         int c = getchar_timeout_us(0);
         if ((c == '\n')||(c == '\r')) continue;
@@ -194,6 +221,7 @@ void process (void) {
             break;
         }
         mode = c;
+        newdata = true;
     }
 
     switch (mode) {
@@ -256,6 +284,25 @@ void process (void) {
         case 'E':
             if (last_mode != mode) printf("an: blink\n");
             animation_blink2(2);
+
+        case 't':
+            animation_line_blink(0);
+        break;
+        case 'i':
+            animation_line_blink(1);
+        break;
+
+        case 'y':
+            animation_line_blink(2);
+        break;
+        case 'u':
+            animation_line_blink(3);
+        break;
+        case 'Y':
+            animation_line_blink(4);
+        break;
+        case 'U':
+            animation_line_blink(5);
         break;
 
 
@@ -269,6 +316,37 @@ void process (void) {
             clear_pixels();
             show_pixels();
             mode = 0;
+        break;
+
+        case ',':
+            if ((last_mode != ',')&&(last_mode != ';')) m_one_pixel = NUMPIXELS - 1;
+            clear_pixels();
+            if (newdata) {
+                m_one_pixel++;
+                if (m_one_pixel >= NUMPIXELS) {
+                    m_one_pixel = 0;
+                }
+                printf("px %d\n", m_one_pixel);
+            }
+            set_pixel(m_one_pixel, 30, 30, 30);
+            show_pixels();
+            sleep_ms(100);
+        break;
+
+        case ';':
+            if ((last_mode != ',')&&(last_mode != ';')) m_one_pixel = 0;
+            clear_pixels();
+            if (newdata) {
+                if (m_one_pixel > 0) {
+                    m_one_pixel--;
+                } else {
+                    m_one_pixel = NUMPIXELS - 1;
+                }
+                printf("px %d\n", m_one_pixel);
+            }
+            set_pixel(m_one_pixel, 30, 30, 30);
+            show_pixels();
+            sleep_ms(100);
         break;
 
         case '0':

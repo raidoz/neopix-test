@@ -2,7 +2,8 @@
 #define PIXELS_H_
 
 //#define MATRIX153
-#define MATRIX57
+//#define MATRIX57
+#define LINE57
 
 #if defined(MATRIX153)
     #define ARROW_STEP 2
@@ -18,6 +19,13 @@
     #define LINE_DELAY 100
     #define ARROW_DELAY 50
     #define POWER_LIMIT 7000
+#elif defined(LINE57)
+    #define ARROW_STEP 1
+    #define NUMROWS 1
+    #define NUMCOLS 57
+    #define LINE_DELAY 100
+    #define ARROW_DELAY 50
+    #define POWER_LIMIT 9200
 #else
     #define ARROW_STEP 1
     #define NUMROWS 1
