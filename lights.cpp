@@ -147,6 +147,119 @@ static void animation_arr2_r (void) {
     }
 }
 
+static void animation_arr2_trail_back (void) {
+    clear_pixels();
+    printf("an6\n");
+    const int offset = 14;
+    const int offset_trail = 4;
+    for(int i=offset, j=NUMCOLS-1; i<NUMCOLS/2+offset-offset_trail; i++, j--) {
+        //right side, looking from back of bot
+        set_matrix_pixel(2, i-ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i-ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(2, i-ARROW_STEP-1, bright(255), bright(80), 0);
+        set_matrix_pixel(1, i-1, bright(255), bright(80), 0);
+        set_matrix_pixel(0, i-ARROW_STEP-1, bright(255), bright(80), 0);
+
+        set_matrix_pixel(2, i-(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(1, i-2, 0, 0, 0);
+        set_matrix_pixel(0, i-(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(2, i-(ARROW_STEP+3), 0, 0, 0);
+        set_matrix_pixel(1, i-3, 0, 0, 0);
+        set_matrix_pixel(0, i-(ARROW_STEP+3), 0, 0, 0);
+
+        //left side, looking from back of bot
+        if (j>=NUMCOLS/2-offset)
+        {
+            set_matrix_pixel(2, j+ARROW_STEP, bright(255), bright(80), 0);
+            set_matrix_pixel(1, j, bright(255), bright(80), 0);
+            set_matrix_pixel(0, j+ARROW_STEP, bright(255), bright(80), 0);
+            set_matrix_pixel(2, j+ARROW_STEP+1, bright(255), bright(80), 0);
+            set_matrix_pixel(1, j+1, bright(255), bright(80), 0);
+            set_matrix_pixel(0, j+ARROW_STEP+1, bright(255), bright(80), 0);
+
+            set_matrix_pixel(2, j+(ARROW_STEP+2), 0, 0, 0);
+            set_matrix_pixel(1, j+2, 0, 0, 0);
+            set_matrix_pixel(0, j+(ARROW_STEP+2), 0, 0, 0);
+            set_matrix_pixel(2, j+(ARROW_STEP+3), 0, 0, 0);
+            set_matrix_pixel(1, j+3, 0, 0, 0);
+            set_matrix_pixel(0, j+(ARROW_STEP+3), 0, 0, 0);
+        }
+
+        show_pixels();   // Send the updated pixel colors to the hardware.
+        sleep_ms(ARROW_DELAY); // Pause before next pass through loop
+    }
+    
+}
+
+static void animation_arr2_trail_front (void) {
+    clear_pixels();
+    printf("an7\n");
+    const int offset = 14;
+    const int offset_trail = 2;
+    for(int i=NUMCOLS-offset, j=(NUMCOLS-1)/2-offset_trail; j>=7-offset_trail; i++, j--) {
+        //left side, looking from back of bot
+        if (i <= NUMCOLS)
+        {
+            set_matrix_pixel(2, i-ARROW_STEP, bright(255), bright(80), 0);
+            set_matrix_pixel(1, i, bright(255), bright(80), 0);
+            set_matrix_pixel(0, i-ARROW_STEP, bright(255), bright(80), 0);
+            set_matrix_pixel(2, i-ARROW_STEP-1, bright(255), bright(80), 0);
+            set_matrix_pixel(1, i-1, bright(255), bright(80), 0);
+            set_matrix_pixel(0, i-ARROW_STEP-1, bright(255), bright(80), 0);
+
+            set_matrix_pixel(2, i-(ARROW_STEP+2), 0, 0, 0);
+            set_matrix_pixel(1, i-2, 0, 0, 0);
+            set_matrix_pixel(0, i-(ARROW_STEP+2), 0, 0, 0);
+            set_matrix_pixel(2, i-(ARROW_STEP+3), 0, 0, 0);
+            set_matrix_pixel(1, i-3, 0, 0, 0);
+            set_matrix_pixel(0, i-(ARROW_STEP+3), 0, 0, 0);
+        }
+        else
+        {
+            // TODO: if 3 column led matrix, add disabling of col 1 and 2 leds
+            set_matrix_pixel(0, NUMCOLS, 0, 0, 0);
+            set_matrix_pixel(0, NUMCOLS-1, 0, 0, 0);
+            set_matrix_pixel(0, NUMCOLS-2, 0, 0, 0);
+            int k = i - NUMCOLS;
+            if (k >= 2)
+            {
+                set_matrix_pixel(2, k-ARROW_STEP, bright(255), bright(80), 0);
+                set_matrix_pixel(1, k, bright(255), bright(80), 0);
+                set_matrix_pixel(0, k-ARROW_STEP, bright(255), bright(80), 0);
+                set_matrix_pixel(2, k-ARROW_STEP-1, bright(255), bright(80), 0);
+                set_matrix_pixel(1, k-1, bright(255), bright(80), 0);
+                set_matrix_pixel(0, k-ARROW_STEP-1, bright(255), bright(80), 0);
+
+                set_matrix_pixel(2, k-(ARROW_STEP+2), 0, 0, 0);
+                set_matrix_pixel(1, k-2, 0, 0, 0);
+                set_matrix_pixel(0, k-(ARROW_STEP+2), 0, 0, 0);
+                set_matrix_pixel(2, k-(ARROW_STEP+3), 0, 0, 0);
+                set_matrix_pixel(1, k-3, 0, 0, 0);
+                set_matrix_pixel(0, k-(ARROW_STEP+3), 0, 0, 0);
+            }
+        }
+
+        //right side, looking from back of bot
+        set_matrix_pixel(2, j+ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(1, j, bright(255), bright(80), 0);
+        set_matrix_pixel(0, j+ARROW_STEP, bright(255), bright(80), 0);
+        set_matrix_pixel(2, j+ARROW_STEP+1, bright(255), bright(80), 0);
+        set_matrix_pixel(1, j+1, bright(255), bright(80), 0);
+        set_matrix_pixel(0, j+ARROW_STEP+1, bright(255), bright(80), 0);
+
+        set_matrix_pixel(2, j+(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(1, j+2, 0, 0, 0);
+        set_matrix_pixel(0, j+(ARROW_STEP+2), 0, 0, 0);
+        set_matrix_pixel(2, j+(ARROW_STEP+3), 0, 0, 0);
+        set_matrix_pixel(1, j+3, 0, 0, 0);
+        set_matrix_pixel(0, j+(ARROW_STEP+3), 0, 0, 0);
+        
+        show_pixels();
+        sleep_ms(ARROW_DELAY);
+    }
+}
+
 static void animation_blink (uint8_t row) {
     if (row > NUMROWS) return;
 
@@ -248,6 +361,16 @@ void process (void) {
         case 'd':
             if (last_mode != mode) printf("an: >>>\n");
             animation_arr_r();
+        break;
+
+        case 'A':
+            if (last_mode != mode) printf("an: front >>>>>><<<<<<\n");
+            animation_arr2_trail_front();
+        break;
+        
+        case 'B':
+            if (last_mode != mode) printf("an: back >>>>>><<<<<<\n");
+            animation_arr2_trail_back();
         break;
 
         case 'C':
